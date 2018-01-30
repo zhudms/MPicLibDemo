@@ -40,7 +40,7 @@ public class ImagePicAdapter extends RecyclerView.Adapter<ImagePicAdapter.MyHold
         return holder;
     }
 
-
+//布局
     @Override
     public void onBindViewHolder(MyHolder holder, int position) {
 
