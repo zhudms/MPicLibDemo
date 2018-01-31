@@ -1,6 +1,11 @@
 package com.ryl.mypiclibdemo;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.Matrix;
+import android.graphics.drawable.Drawable;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,7 +14,10 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.target.Target;
+import com.bumptech.glide.request.transition.Transition;
+import com.ryl.commonlib.utils.BitmapU;
 
 import java.util.List;
 
@@ -22,16 +30,12 @@ public class ImagePicAdapter extends RecyclerView.Adapter<ImagePicAdapter.MyHold
     private List<String> picPaths;
     private Context mContext;
 
+
     public ImagePicAdapter(List<String> picPaths, Context mContext) {
         this.picPaths = picPaths;
         this.mContext = mContext;
     }
 
-    protected boolean isScrolling = false;
-
-    public void setScrolling(boolean scrolling) {
-        isScrolling = scrolling;
-    }
 
     @Override
     public MyHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -40,38 +44,51 @@ public class ImagePicAdapter extends RecyclerView.Adapter<ImagePicAdapter.MyHold
         return holder;
     }
 
-//布局
+    //布局
     @Override
-    public void onBindViewHolder(MyHolder holder, int position) {
+    public void onBindViewHolder(final MyHolder holder, int position) {
 
 //tag + 尺寸指定 + 占位符  解决图片串位问题(使用不修改尺寸属性无效),-->必须确定内存中缓存的是原始图片还是屏幕上显示的图片大小
-        if (!isScrolling) {
 
-            if (holder.getmTag() != null && holder.getmTag().equals(picPaths.get(position))) {//解决图片错位问题
-                //此处判断必须和下面设置占位图一起使用才有效(只使用占位图而不指定图片大小时,在复用中会出现图片大小错位,持续滑动,最终会使所又能图片都变成占位图的大小)
-                return;
-            }
-
-            holder.setmTag(picPaths.get(position));
-
-            RequestOptions cropOptions = new RequestOptions();
-//            cropOptions= cropOptions.fitCenter();//在 xml 中指定也可生效
-            cropOptions= cropOptions.placeholder(R.drawable.ic_launcher_foreground);
-            cropOptions=  cropOptions.dontAnimate();
-            cropOptions=   cropOptions.dontTransform();
-            cropOptions=   cropOptions.error(R.drawable.ic_launcher_background);
-
-            cropOptions=    cropOptions.override(Target.SIZE_ORIGINAL);//(加上尺寸指定,滑动顺畅很多)只使用占位图而不指定图片大小时,在复用中会出现图片大小错位,持续滑动,最终会使所又能图片都变成占位图的大小
-
-            Glide.with(mContext)
-                    .load(picPaths.get(position))
-                    .apply(cropOptions)
-
-                    .into(holder.getmPic());
-        } else {
-//            holder.mPic.setImageResource(R.drawable.ic_launcher_background);
+        if (holder.getmTag() != null && holder.getmTag().equals(picPaths.get(position))) {//解决图片错位问题
+            //此处判断必须和下面设置占位图一起使用才有效(只使用占位图而不指定图片大小时,在复用中会出现图片大小错位,持续滑动,最终会使所又能图片都变成占位图的大小)
+            return;
         }
 
+        holder.setmTag(picPaths.get(position));
+
+        RequestOptions cropOptions = new RequestOptions();
+//            cropOptions= cropOptions.fitCenter();//在 xml 中指定也可生效
+        cropOptions = cropOptions.placeholder(R.drawable.ic_launcher_foreground);
+        cropOptions = cropOptions.dontAnimate();
+        cropOptions = cropOptions.dontTransform();
+        cropOptions = cropOptions.error(R.drawable.ic_launcher_background);
+        cropOptions = cropOptions.override(Target.SIZE_ORIGINAL);//(加上尺寸指定,滑动顺畅很多)只使用占位图而不指定图片大小时,在复用中会出现图片大小错位,持续滑动,最终会使所又能图片都变成占位图的大小
+
+        Glide.with(mContext)
+                .asBitmap()
+                .load(picPaths.get(position))
+                .apply(cropOptions)
+//                    .into(holder.getmPic());
+                .into(new SimpleTarget<Bitmap>() {
+                    @Override
+                    public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+//                        int width = resource.getWidth();
+//                        int height = resource.getHeight();
+/////按宽度缩放
+//                        double scal=MyApplication.winWidth/(float)width;
+//                        double tagWidth=width*scal;
+//                        double tagHeight=height*scal;
+//
+//
+//                        Bitmap bitmap=Bitmap.createScaledBitmap(resource,(int)tagWidth,(int)tagHeight,false);
+
+//                        holder.getmPic().setImageBitmap(BitmapU.getWinWidthBitmap(mContext,resource));
+//                        holder.getmPic().setImageBitmap(resource);
+                        holder.getmPic().setImageBitmap(BitmapU.getWinWidthBitmap(mContext, resource));
+
+                    }
+                });
 
     }
 

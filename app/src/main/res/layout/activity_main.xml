@@ -15,5 +15,9 @@
 
     <ImageView
         android:id="@+id/main_image"
-        style="@style/wrap"/>
+        android:layout_width="100dp"
+        android:visibility="invisible"
+        android:background="#9999FF"
+        android:scaleType="centerInside"
+        android:layout_height="100dp"/>
 </android.support.constraint.ConstraintLayout>

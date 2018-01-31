@@ -7,9 +7,9 @@
 
     <ImageView
         android:id="@+id/item_image"
-        android:scaleType="fitCenter"
+        android:scaleType="centerInside"
         style="@style/match"
-        android:adjustViewBounds="true"
+        android:adjustViewBounds="false"
         android:layout_gravity="center_horizontal"
   />
     <TextView

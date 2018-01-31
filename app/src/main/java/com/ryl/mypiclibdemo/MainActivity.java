@@ -1,22 +1,17 @@
 package com.ryl.mypiclibdemo;
 
 import android.app.Activity;
-import android.media.Image;
+import android.content.Context;
+import android.graphics.Point;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.GlideBuilder;
-import com.bumptech.glide.load.engine.cache.DiskCache;
-import com.bumptech.glide.load.engine.cache.InternalCacheDiskCacheFactory;
-import com.bumptech.glide.request.RequestOptions;
+import com.ryl.commonlib.utils.WindowU;
 
 import java.util.ArrayList;
-
-import static android.widget.AbsListView.OnScrollListener.SCROLL_STATE_IDLE;
-import static com.bumptech.glide.request.RequestOptions.bitmapTransform;
 
 public class MainActivity extends Activity {
 
@@ -24,8 +19,14 @@ public class MainActivity extends Activity {
     private RecyclerView view;
     private ImageView mImageView;
 
-    private String[] s = {"http://p1.music.126.net/1DQ7buwuBml2cfa4Prwyig==/109951163091218734.jpg",
-            "http://p1.music.126.net/I0BPzraIsUChOs4-Q4CQzA==/18981968742450744.jpg"
+    private String[] s = {
+            "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1517380932213&di=785e9f46d9d09d022ada1dfa2f73a34c&imgtype=0&src=http%3A%2F%2Fimg5.duitang.com%2Fuploads%2Fitem%2F201411%2F04%2F20141104171337_xaMXx.jpeg"
+           ,"https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1517380932213&di=f1998db477ff095a733cdb43f7d17843&imgtype=0&src=http%3A%2F%2Fimg.bbs.cnhubei.com%2Fforum%2Fdvbbs%2F2004-4%2F200441915031894.jpg",
+            "http://img2.imgtn.bdimg.com/it/u=1694240432,3664501847&fm=214&gp=0.jpg"
+            ,"http://img4.imgtn.bdimg.com/it/u=2353945989,2522924748&fm=214&gp=0.jpg"
+            ,
+            "http://p1.music.126.net/1DQ7buwuBml2cfa4Prwyig==/109951163091218734.jpg"
+            , "http://p1.music.126.net/I0BPzraIsUChOs4-Q4CQzA==/18981968742450744.jpg"
             , "http://p1.music.126.net/MGIjNwzVwcquv9zjfsdPKQ==/109951163118174516.jpg"
             , "http://p1.music.126.net/9z7m8ilB6aK3fmCyqAUXzg==/109951163116581851.jpg"
             , "http://p1.music.126.net/YaAIDPETpDz9-phHiMEDhw==/109951163117041486.jpg"
@@ -45,6 +46,7 @@ public class MainActivity extends Activity {
             , "http://p1.music.126.net/SBra879KiJAf0ONin5-73w==/109951163110139042.jpg"
             , "http://p1.music.126.net/q0d_SCa1eaT_SKOq7X-2qg==/19056735533180513.jpg"
             , "http://p1.music.126.net/5DTZrJcTO15FwcDL6tI2dg==/109951163101601184.jpg"
+
     };
     private String pic1 = "http://img.taopic.com/uploads/allimg/140729/240450-140HZP45790.jpg";
     private String pic2 = "http://p1.music.126.net/YG3mvsiivI9TQUw6YNscjg==/19176582300597176.jpg";
@@ -57,12 +59,20 @@ public class MainActivity extends Activity {
 
         setContentView(R.layout.activity_main);
 
+        initRecycleView();
+//        showSingleImage();
+
+
+    }
+
+
+    private void initRecycleView() {
         view = ((RecyclerView) findViewById(R.id.main_rv));
 //        showSingleImage();
 
 
         ArrayList<String> list = initData();
-         ImagePicAdapter mRecyclerViewAdapter = new ImagePicAdapter(list, MainActivity.this);
+        ImagePicAdapter mRecyclerViewAdapter = new ImagePicAdapter(list, MainActivity.this);
         view.setLayoutManager(new LinearLayoutManager(MainActivity.this));
 
 
@@ -102,10 +112,10 @@ public class MainActivity extends Activity {
 
     private void showSingleImage() {
         mImageView = ((ImageView) findViewById(R.id.main_image));
-        GlideBuilder builder = new GlideBuilder();
-        builder.setDiskCache(
-                new InternalCacheDiskCacheFactory(MainActivity.this,
-                        "ryl", 100 * 1024 * 1024));
+//        GlideBuilder builder = new GlideBuilder();
+//        builder.setDiskCache(
+//                new InternalCacheDiskCacheFactory(MainActivity.this,
+//                        "ryl", 100 * 1024 * 1024));
 //init(MainActivity.this,builder).
         Glide.with(MainActivity.this).load(pic1).into(mImageView);
     }
