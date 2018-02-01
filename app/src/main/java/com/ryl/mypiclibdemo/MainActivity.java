@@ -4,13 +4,16 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.Point;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.ryl.commonlib.utils.ToastU;
 import com.ryl.commonlib.utils.WindowU;
 
+import java.io.File;
 import java.util.ArrayList;
 
 public class MainActivity extends Activity {
@@ -20,10 +23,11 @@ public class MainActivity extends Activity {
     private ImageView mImageView;
 
     private String[] s = {
+
             "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1517380932213&di=785e9f46d9d09d022ada1dfa2f73a34c&imgtype=0&src=http%3A%2F%2Fimg5.duitang.com%2Fuploads%2Fitem%2F201411%2F04%2F20141104171337_xaMXx.jpeg"
-           ,"https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1517380932213&di=f1998db477ff095a733cdb43f7d17843&imgtype=0&src=http%3A%2F%2Fimg.bbs.cnhubei.com%2Fforum%2Fdvbbs%2F2004-4%2F200441915031894.jpg",
+            , "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1517380932213&di=f1998db477ff095a733cdb43f7d17843&imgtype=0&src=http%3A%2F%2Fimg.bbs.cnhubei.com%2Fforum%2Fdvbbs%2F2004-4%2F200441915031894.jpg",
             "http://img2.imgtn.bdimg.com/it/u=1694240432,3664501847&fm=214&gp=0.jpg"
-            ,"http://img4.imgtn.bdimg.com/it/u=2353945989,2522924748&fm=214&gp=0.jpg"
+            , "http://img4.imgtn.bdimg.com/it/u=2353945989,2522924748&fm=214&gp=0.jpg"
             ,
             "http://p1.music.126.net/1DQ7buwuBml2cfa4Prwyig==/109951163091218734.jpg"
             , "http://p1.music.126.net/I0BPzraIsUChOs4-Q4CQzA==/18981968742450744.jpg"
@@ -52,7 +56,6 @@ public class MainActivity extends Activity {
     private String pic2 = "http://p1.music.126.net/YG3mvsiivI9TQUw6YNscjg==/19176582300597176.jpg";
     private String pic3 = "http://p1.music.126.net/c0Hl8H-gdr_y1EEdifC4Xw==/19049038951751146.jpg";
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,6 +66,21 @@ public class MainActivity extends Activity {
 //        showSingleImage();
 
 
+//        initLocalData();
+
+
+    }
+
+    private void initLocalData() {
+        String path = getExternalCacheDir()
+                + "/a.jpg";
+
+        File file = new File(path);
+        if (file.exists()) {
+            ToastU.ht(MainActivity.this, "exit,size=" + file.getTotalSpace());
+            mImageView = ((ImageView) findViewById(R.id.main_image));
+            Glide.with(MainActivity.this).load(file).into(mImageView);
+        }
     }
 
 
@@ -102,7 +120,8 @@ public class MainActivity extends Activity {
         list.add(pic1);
         list.add(pic2);
         list.add(pic3);
-
+//        list.add(getExternalCacheDir()
+//                + "/a.jpg");
         for (int i = 0; i < s.length; i++) {
             list.add(s[i]);
         }

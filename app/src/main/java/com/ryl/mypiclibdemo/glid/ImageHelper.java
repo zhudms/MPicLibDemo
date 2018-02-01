@@ -1,5 +1,7 @@
 package com.ryl.mypiclibdemo.glid;
 
+import android.widget.ImageView;
+
 /**
  *
  * 添加接口定义,可以方便更换图片库
@@ -13,21 +15,16 @@ public interface ImageHelper {
      * 位置
      */
 
-    //网络地址(最常用)
-    ImageHelper getNetPic(String uri);
+    //加载图片(网络地址和本地地址一样的方法)
+    ImageHelper loadPic(String uri,ImageView view);
 
-
-    //本地文件
-
-    //完整路径
-    ImageHelper getLocalPic(String picPath);
 
     //应用默认图片目录
     ImageHelper getLocalPicByName(String picName);
 
 
     //网络获取的直接文件,需要解码等
-    ImageHelper getStreamPic( String pic);
+//    ImageHelper getStreamPic( String pic);
 
 
     /**

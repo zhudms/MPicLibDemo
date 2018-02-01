@@ -1,5 +1,6 @@
 package com.ryl.mypiclibdemo;
 
+import android.app.Application;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Matrix;
@@ -14,10 +15,12 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.target.Target;
 import com.bumptech.glide.request.transition.Transition;
 import com.ryl.commonlib.utils.BitmapU;
+import com.ryl.commonlib.utils.LU;
 
 import java.util.List;
 
@@ -46,11 +49,13 @@ public class ImagePicAdapter extends RecyclerView.Adapter<ImagePicAdapter.MyHold
 
     //布局
     @Override
-    public void onBindViewHolder(final MyHolder holder, int position) {
+    public void onBindViewHolder(final MyHolder holder, final int position) {
 
 //tag + 尺寸指定 + 占位符  解决图片串位问题(使用不修改尺寸属性无效),-->必须确定内存中缓存的是原始图片还是屏幕上显示的图片大小
 
-        if (holder.getmTag() != null && holder.getmTag().equals(picPaths.get(position))) {//解决图片错位问题
+
+        LU.hd("asd", "position=" + position);
+        if (holder.getmTag() != null && holder.getmTag().equals(picPaths.get(position))) {//youhua ,哪里解决错位了?解决图片错位问题
             //此处判断必须和下面设置占位图一起使用才有效(只使用占位图而不指定图片大小时,在复用中会出现图片大小错位,持续滑动,最终会使所又能图片都变成占位图的大小)
             return;
         }
@@ -59,36 +64,30 @@ public class ImagePicAdapter extends RecyclerView.Adapter<ImagePicAdapter.MyHold
 
         RequestOptions cropOptions = new RequestOptions();
 //            cropOptions= cropOptions.fitCenter();//在 xml 中指定也可生效
-        cropOptions = cropOptions.placeholder(R.drawable.ic_launcher_foreground);
-        cropOptions = cropOptions.dontAnimate();
-        cropOptions = cropOptions.dontTransform();
-        cropOptions = cropOptions.error(R.drawable.ic_launcher_background);
-        cropOptions = cropOptions.override(Target.SIZE_ORIGINAL);//(加上尺寸指定,滑动顺畅很多)只使用占位图而不指定图片大小时,在复用中会出现图片大小错位,持续滑动,最终会使所又能图片都变成占位图的大小
-
+        cropOptions = cropOptions.placeholder(R.drawable.ic_launcher_foreground)
+                .dontAnimate()
+                .dontTransform()
+                .error(R.drawable.ic_launcher_background)
+                .override(MyApplication.winWidth);//(加上尺寸指定,滑动顺畅很多)只使用占位图而不指定图片大小时,在复用中会出现图片大小错位,持续滑动,最终会使所又能图片都变成占位图的大小
+//只指定一个尺寸,会使图片按比例缩放,不会变成方形,不指定尺寸,尺寸一定会出问题,一定要加
         Glide.with(mContext)
-                .asBitmap()
+//                .asBitmap()//asbitmap 方法不会导致问题
                 .load(picPaths.get(position))
                 .apply(cropOptions)
-//                    .into(holder.getmPic());
-                .into(new SimpleTarget<Bitmap>() {
-                    @Override
-                    public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
-//                        int width = resource.getWidth();
-//                        int height = resource.getHeight();
-/////按宽度缩放
-//                        double scal=MyApplication.winWidth/(float)width;
-//                        double tagWidth=width*scal;
-//                        double tagHeight=height*scal;
-//
-//
-//                        Bitmap bitmap=Bitmap.createScaledBitmap(resource,(int)tagWidth,(int)tagHeight,false);
 
-//                        holder.getmPic().setImageBitmap(BitmapU.getWinWidthBitmap(mContext,resource));
-//                        holder.getmPic().setImageBitmap(resource);
-                        holder.getmPic().setImageBitmap(BitmapU.getWinWidthBitmap(mContext, resource));
-
-                    }
-                });
+//                .into(new BitmapImageViewTarget(holder.getmPic()));
+                .into(holder.getmPic());//直接使用into
+//                .into(new SimpleTarget<Bitmap>() {//使用这个方法,会使占位图无法显示,图片出现错位问题,解决方法暂时不明,不要使用
+//                    @Override
+//                    public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+//
+//                        if (holder.getmTag() == picPaths.get(position)) {
+//
+//                            holder.getmPic().setImageBitmap(BitmapU.getWinWidthBitmap(mContext, resource));
+//                        }
+//
+//                    }
+//                });
 
     }
 
@@ -103,6 +102,7 @@ public class ImagePicAdapter extends RecyclerView.Adapter<ImagePicAdapter.MyHold
     public void onViewRecycled(MyHolder holder) {
         super.onViewRecycled(holder);
         Glide.with(mContext).clear(holder.itemView);
+        holder.setmTag(null);
 //        ToastU.ht(mContext, "OnRecycled");
     }
 

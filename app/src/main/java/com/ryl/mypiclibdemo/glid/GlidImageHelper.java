@@ -1,5 +1,7 @@
 package com.ryl.mypiclibdemo.glid;
 
+import android.widget.ImageView;
+
 /**
  * Created by rongyile on 2018/1/29.
  */
@@ -7,22 +9,12 @@ package com.ryl.mypiclibdemo.glid;
 public class GlidImageHelper implements ImageHelper {
 
     @Override
-    public ImageHelper getNetPic(String uri) {
-        return null;
-    }
-
-    @Override
-    public ImageHelper getLocalPic(String picPath) {
+    public ImageHelper loadPic(String uri, ImageView view) {
         return null;
     }
 
     @Override
     public ImageHelper getLocalPicByName(String picName) {
-        return null;
-    }
-
-    @Override
-    public ImageHelper getStreamPic(String pic) {
         return null;
     }
 
