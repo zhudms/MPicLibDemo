@@ -1,26 +1,62 @@
-//package com.ryl.mypiclibdemo.glid;
-//
-//import android.content.Context;
-//import android.support.annotation.Nullable;
-//import android.widget.ImageView;
-//
-//import com.bumptech.glide.request.RequestOptions;
-//
-///**
-// * 添加接口定义,可以方便更换图片库
-// * <p>
-// * 所有请求必须可以取消,不然可能造成内存泄露,或刷界面的时候页面已经被回收,导致空指针问题
-// * Created by rongyile on 2018/1/26.
-// */
-//
-//public interface ImageHelper {
-//
+package com.ryl.mypiclibdemo.glid;
+
+import android.content.Context;
+import android.support.annotation.Nullable;
+import android.widget.ImageView;
+
+import com.bumptech.glide.request.RequestOptions;
+
+/**
+ * 添加接口定义,可以方便更换图片库
+ * <p>
+ * 所有请求必须可以取消,不然可能造成内存泄露,或刷界面的时候页面已经被回收,导致空指针问题
+ * Created by rongyile on 2018/1/26.
+ */
+
+  interface ImageHelper {
+
+
+     RequestOptions getOptions();
+
+
+     GlidImageHelper noCache();
+
+     GlidImageHelper round();
+
+
+     GlidImageHelper sepia();
+
+      GlidImageHelper toon();
+
+      GlidImageHelper noDiskCache();
+
+
+      GlidImageHelper noMemoryCache();
+
+      GlidImageHelper tagSize(int x, int y);
+
+      void loadOriginal(Context context, String tag, ImageView view);
+
+    //最基础的方法
+      void loadPic(Context context, String uri
+            , ImageView view, @Nullable RequestOptions options);
+
+      void getLocalPicByName(Context context, String parentPath
+            , String picName, ImageView view, @Nullable RequestOptions options);
+
+      void getLocalPicByPath(Context context, String picPath
+            , ImageView view, RequestOptions options);
+
+      RequestOptions getDefaultOptions(@Nullable RequestOptions options);
+
+
+      void cancelGet(Context context, ImageView imageView);
 //    /**
 //     * 位置
 //     */
 //
 //    //加载图片(网络地址和本地地址一样的方法)
-//    public void loadPic(Context context, String uri, ImageView view);
+//      void loadPic(Context context, String uri, ImageView view);
 //
 //    void loadPic(Context context, String uri, ImageView view, RequestOptions options);
 //
@@ -66,7 +102,7 @@
 //    RequestOptions getNoDiskCacheOptions(@Nullable RequestOptions options);    //    .skipMemoryCache(true)
 //
 //    RequestOptions getNoCacheOptions(@Nullable RequestOptions options);//禁用内存缓存和 sd卡缓存//     .diskCacheStrategy(DiskCacheStrategy.NONE)
-//
-//
-//}
-//
+
+
+}
+

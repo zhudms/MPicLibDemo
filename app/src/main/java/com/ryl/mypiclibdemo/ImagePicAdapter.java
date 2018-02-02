@@ -55,14 +55,15 @@ public class ImagePicAdapter extends RecyclerView.Adapter<ImagePicAdapter.MyHold
 
         if (position == 2) {
 
-            RequestOptions options=new GlidImageHelper().round().sepia().toon()
-                    .tagSize(MyApplication.winWidth,-1).getOptions();
+            GlidImageHelper helper = new GlidImageHelper();
+            RequestOptions options = helper.round().sepia()
+                    .tagSize(MyApplication.winWidth, -1).getOptions();
 
 
 //            RequestOptions options=new GlidImageHelper().round().sepia()
 //                    .tagSize(MyApplication.winWidth,-1).getOptions();
 
-            GlidImageHelper.loadPic(mContext, picPaths.get(position), holder.getmPic(),options);
+            helper.loadPic(mContext, picPaths.get(position), holder.getmPic(), options);
         } else {
 
 

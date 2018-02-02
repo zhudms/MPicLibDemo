@@ -25,12 +25,13 @@ import jp.wasabeef.glide.transformations.gpu.ToonFilterTransformation;
  * Created by rongyile on 2018/1/29.
  */
 
-public class GlidImageHelper {
+public class GlidImageHelper implements ImageHelper {
 
     public static final int SIZE_UNDEFINED = -1;
 
     public RequestOptions options;
     private Collection<Transformation> transformations;
+
 
     public GlidImageHelper() {
         transformations = new ArrayList<Transformation>();
@@ -38,6 +39,7 @@ public class GlidImageHelper {
     }
 
 
+    @Override
     public RequestOptions getOptions() {
 
         options = getDefaultOptions(options);
@@ -52,6 +54,7 @@ public class GlidImageHelper {
     }
 
 
+    @Override
     public GlidImageHelper noCache() {
 
         options.skipMemoryCache(true);
@@ -59,6 +62,8 @@ public class GlidImageHelper {
         return this;
     }
 
+
+    @Override
     public GlidImageHelper round() {
 
 //        transformations.add(new CircleCrop());
@@ -68,6 +73,7 @@ public class GlidImageHelper {
     }
 
 
+    @Override
     public GlidImageHelper sepia() {
 
 //        options.transform(new SepiaFilterTransformation());
@@ -77,6 +83,7 @@ public class GlidImageHelper {
     }
 
 
+    @Override
     public GlidImageHelper toon() {
 
 //        options.transform(new SepiaFilterTransformation());
@@ -86,6 +93,7 @@ public class GlidImageHelper {
     }
 
 
+    @Override
     public GlidImageHelper noDiskCache() {
 
         options.diskCacheStrategy(DiskCacheStrategy.NONE);
@@ -93,11 +101,14 @@ public class GlidImageHelper {
     }
 
 
+    @Override
     public GlidImageHelper noMemoryCache() {
         options.skipMemoryCache(true);
         return this;
     }
 
+
+    @Override
     public GlidImageHelper tagSize(int x, int y) {
         if (x > 0 && y > 0) {
 
@@ -110,12 +121,16 @@ public class GlidImageHelper {
         return this;
     }
 
-    public static void loadOriginal(Context context, String tag, ImageView view) {
+
+    @Override
+    public  void loadOriginal(Context context, String tag, ImageView view) {
         Glide.with(context).load(tag).into(view);
     }
 
+
     //最基础的方法
-    public static void loadPic(Context context, String uri
+    @Override
+    public void loadPic(Context context, String uri
             , ImageView view, @Nullable RequestOptions options) {
         if (options == null) {
             Glide.with(context).load(uri).apply(getDefaultOptions(null)).into(view);
@@ -125,7 +140,8 @@ public class GlidImageHelper {
     }
 
 
-    public static void getLocalPicByName(Context context, String parentPath
+    @Override
+    public void getLocalPicByName(Context context, String parentPath
             , String picName, ImageView view, @Nullable RequestOptions options) {
 
         if (view == null) {
@@ -144,7 +160,8 @@ public class GlidImageHelper {
     }
 
 
-    public static void getLocalPicByPath(Context context, String picPath
+    @Override
+    public void getLocalPicByPath(Context context, String picPath
             , ImageView view, RequestOptions options) {
         if (view == null) {
             return;
@@ -156,7 +173,8 @@ public class GlidImageHelper {
     }
 
 
-    public static RequestOptions getDefaultOptions(@Nullable RequestOptions options) {
+    @Override
+    public RequestOptions getDefaultOptions(@Nullable RequestOptions options) {
 
         RequestOptions tagOptions;
         if (options == null) {
@@ -171,7 +189,8 @@ public class GlidImageHelper {
     }
 
 
-    public static void cancelGet(Context context, ImageView imageView) {
+    @Override
+    public void cancelGet(Context context, ImageView imageView) {
         Glide.with(context).clear(imageView);
     }
 
