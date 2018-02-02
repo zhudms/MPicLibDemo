@@ -1,12 +1,6 @@
 package com.ryl.mypiclibdemo;
 
-import android.app.Application;
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.Matrix;
-import android.graphics.drawable.Drawable;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,12 +9,8 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.bumptech.glide.request.target.BitmapImageViewTarget;
-import com.bumptech.glide.request.target.SimpleTarget;
-import com.bumptech.glide.request.target.Target;
-import com.bumptech.glide.request.transition.Transition;
-import com.ryl.commonlib.utils.BitmapU;
 import com.ryl.commonlib.utils.LU;
+import com.ryl.mypiclibdemo.glid.GlidImageHelper;
 
 import java.util.List;
 
@@ -62,21 +52,39 @@ public class ImagePicAdapter extends RecyclerView.Adapter<ImagePicAdapter.MyHold
 
         holder.setmTag(picPaths.get(position));
 
-        RequestOptions cropOptions = new RequestOptions();
-//            cropOptions= cropOptions.fitCenter();//在 xml 中指定也可生效
-        cropOptions = cropOptions.placeholder(R.drawable.ic_launcher_foreground)
-                .dontAnimate()
-                .dontTransform()
-                .error(R.drawable.ic_launcher_background)
-                .override(MyApplication.winWidth);//(加上尺寸指定,滑动顺畅很多)只使用占位图而不指定图片大小时,在复用中会出现图片大小错位,持续滑动,最终会使所又能图片都变成占位图的大小
-//只指定一个尺寸,会使图片按比例缩放,不会变成方形,不指定尺寸,尺寸一定会出问题,一定要加
-        Glide.with(mContext)
-//                .asBitmap()//asbitmap 方法不会导致问题
-                .load(picPaths.get(position))
-                .apply(cropOptions)
 
-//                .into(new BitmapImageViewTarget(holder.getmPic()));
-                .into(holder.getmPic());//直接使用into
+        if (position == 2) {
+
+            RequestOptions options=new GlidImageHelper().round().sepia().toon()
+                    .tagSize(MyApplication.winWidth,-1).getOptions();
+
+
+//            RequestOptions options=new GlidImageHelper().round().sepia()
+//                    .tagSize(MyApplication.winWidth,-1).getOptions();
+
+            GlidImageHelper.loadPic(mContext, picPaths.get(position), holder.getmPic(),options);
+        } else {
+
+
+            RequestOptions cropOptions = new RequestOptions();
+//            cropOptions= cropOptions.fitCenter();//在 xml 中指定也可生效
+            cropOptions = cropOptions.placeholder(R.drawable.ic_launcher_foreground)
+                    .error(R.drawable.ic_launcher_background)
+                    .dontAnimate()
+                    .dontTransform();
+
+//                .circleCrop();
+//                .override(MyApplication.winWidth);//(加上尺寸指定,滑动顺畅很多)只使用占位图而不指定图片大小时,在复用中会出现图片大小错位,持续滑动,最终会使所又能图片都变成占位图的大小
+//只指定一个尺寸,会使图片按比例缩放,不会变成方形,不指定尺寸,尺寸一定会出问题,一定要加
+
+
+            Glide.with(mContext)
+                    .asBitmap()//asbitmap 方法不会导致问题
+                    .load(picPaths.get(position))
+                    .apply(cropOptions)
+
+//                .into(new BitmapImageViewTarget(holder.getmPic(),true));
+                    .into(holder.getmPic());//直接使用into
 //                .into(new SimpleTarget<Bitmap>() {//使用这个方法,会使占位图无法显示,图片出现错位问题,解决方法暂时不明,不要使用
 //                    @Override
 //                    public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
@@ -88,7 +96,7 @@ public class ImagePicAdapter extends RecyclerView.Adapter<ImagePicAdapter.MyHold
 //
 //                    }
 //                });
-
+        }
     }
 
 

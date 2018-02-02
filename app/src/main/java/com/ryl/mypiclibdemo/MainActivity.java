@@ -5,11 +5,14 @@ import android.content.Context;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.os.Environment;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.ryl.commonlib.utils.PermissionResult;
+import com.ryl.commonlib.utils.PermissionU;
 import com.ryl.commonlib.utils.ToastU;
 import com.ryl.commonlib.utils.WindowU;
 
@@ -56,18 +59,38 @@ public class MainActivity extends Activity {
     private String pic2 = "http://p1.music.126.net/YG3mvsiivI9TQUw6YNscjg==/19176582300597176.jpg";
     private String pic3 = "http://p1.music.126.net/c0Hl8H-gdr_y1EEdifC4Xw==/19049038951751146.jpg";
 
+    private String[] permissions = {PermissionU.SD_READ, PermissionU.SD_WRITE};
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
 
+        initPermission();
         initRecycleView();
 //        showSingleImage();
 
 
 //        initLocalData();
 
+
+    }
+
+    private void initPermission() {
+        PermissionU.checkPermissions(MainActivity.this, permissions, 3);
+
+
+    }
+
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        PermissionResult.PermissionRequestResult result = PermissionU.isSuccess(grantResults, permissions);
+        if (result.isSuccess) {
+
+        }
 
     }
 
