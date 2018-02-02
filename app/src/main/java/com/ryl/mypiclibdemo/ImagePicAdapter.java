@@ -55,15 +55,14 @@ public class ImagePicAdapter extends RecyclerView.Adapter<ImagePicAdapter.MyHold
 
         if (position == 2) {
 
-            GlidImageHelper helper = new GlidImageHelper();
-            RequestOptions options = helper.round().sepia()
+            RequestOptions options = new GlidImageHelper().round().sepia().toon()
                     .tagSize(MyApplication.winWidth, -1).getOptions();
 
 
 //            RequestOptions options=new GlidImageHelper().round().sepia()
 //                    .tagSize(MyApplication.winWidth,-1).getOptions();
 
-            helper.loadPic(mContext, picPaths.get(position), holder.getmPic(), options);
+            GlidImageHelper.loadPic(mContext, picPaths.get(position), holder.getmPic(), options);
         } else {
 
 
@@ -145,13 +144,4 @@ public class ImagePicAdapter extends RecyclerView.Adapter<ImagePicAdapter.MyHold
 
 
     }
-//
-//    @GlideModule
-//    public class YourAppGlideModule extends AppGlideModule {
-//        @Override
-//        public void applyOptions(Context context, GlideBuilder builder) {
-//            super.applyOptions(context,builder);
-//            builder.setDiskCache(new ExternalCacheDiskCacheFactory(context));
-//        }
-//    }
 }
