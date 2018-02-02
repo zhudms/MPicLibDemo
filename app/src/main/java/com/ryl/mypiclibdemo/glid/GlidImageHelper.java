@@ -16,6 +16,7 @@ import com.ryl.mypiclibdemo.R;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import jp.wasabeef.glide.transformations.MaskTransformation;
 import jp.wasabeef.glide.transformations.gpu.SepiaFilterTransformation;
 import jp.wasabeef.glide.transformations.gpu.ToonFilterTransformation;
 
@@ -66,11 +67,19 @@ public class GlidImageHelper {
 
         return this;
     }
+   public GlidImageHelper mask(int forgrandPicID) {
+
+//        transformations.add(new CircleCrop());
+       transformations.add(new MaskTransformation(forgrandPicID));
+
+        return this;
+    }
 
 
     public GlidImageHelper sepia() {
 
 //        options.transform(new SepiaFilterTransformation());
+
         transformations.add(new SepiaFilterTransformation());
 
         return this;
