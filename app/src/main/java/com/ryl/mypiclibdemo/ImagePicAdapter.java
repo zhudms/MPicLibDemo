@@ -71,10 +71,10 @@ public class ImagePicAdapter extends RecyclerView.Adapter<ImagePicAdapter.MyHold
             cropOptions = cropOptions.placeholder(R.drawable.ic_launcher_foreground)
                     .error(R.drawable.ic_launcher_background)
                     .dontAnimate()
-                    .dontTransform();
+                    .dontTransform()
 
 //                .circleCrop();
-//                .override(MyApplication.winWidth);//(加上尺寸指定,滑动顺畅很多)只使用占位图而不指定图片大小时,在复用中会出现图片大小错位,持续滑动,最终会使所又能图片都变成占位图的大小
+                .override(MyApplication.winWidth);//(加上尺寸指定,滑动顺畅很多)只使用占位图而不指定图片大小时,在复用中会出现图片大小错位,持续滑动,最终会使所又能图片都变成占位图的大小
 //只指定一个尺寸,会使图片按比例缩放,不会变成方形,不指定尺寸,尺寸一定会出问题,一定要加
 
 

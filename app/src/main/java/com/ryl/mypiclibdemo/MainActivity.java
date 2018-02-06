@@ -6,6 +6,7 @@ import android.graphics.Point;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.widget.ImageView;
@@ -114,7 +115,8 @@ public class MainActivity extends Activity {
 
         ArrayList<String> list = initData();
         ImagePicAdapter mRecyclerViewAdapter = new ImagePicAdapter(list, MainActivity.this);
-        view.setLayoutManager(new LinearLayoutManager(MainActivity.this));
+        view.setLayoutManager(new GridLayoutManager(MainActivity.this,2));
+//        view.setLayoutManager(new LinearLayoutManager(MainActivity.this));
 
 
         // 滚动静止时才加载图片资源，提升流畅度(实测与 glide 结合使用不好,不加更好)

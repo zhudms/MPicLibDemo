@@ -53,13 +53,6 @@ public class GlidImageHelper {
     }
 
 
-    public GlidImageHelper noCache() {
-
-        options.skipMemoryCache(true);
-
-        return this;
-    }
-
     public GlidImageHelper round() {
 
 //        transformations.add(new CircleCrop());
@@ -95,6 +88,15 @@ public class GlidImageHelper {
     }
 
 
+    public GlidImageHelper noCache() {
+
+        options.skipMemoryCache(true);
+        options.diskCacheStrategy(DiskCacheStrategy.NONE);
+        return this;
+    }
+
+
+
     public GlidImageHelper noDiskCache() {
 
         options.diskCacheStrategy(DiskCacheStrategy.NONE);
@@ -119,50 +121,7 @@ public class GlidImageHelper {
         return this;
     }
 
-    public static void loadOriginal(Context context, String tag, ImageView view) {
-        Glide.with(context).load(tag).into(view);
-    }
 
-    //最基础的方法
-    public static void loadPic(Context context, String uri
-            , ImageView view, @Nullable RequestOptions options) {
-        if (options == null) {
-            Glide.with(context).load(uri).apply(getDefaultOptions(null)).into(view);
-        } else {
-            Glide.with(context).load(uri).apply(options).into(view);
-        }
-    }
-
-
-    public static void getLocalPicByName(Context context, String parentPath
-            , String picName, ImageView view, @Nullable RequestOptions options) {
-
-        if (view == null) {
-            return;
-        }
-
-        String path;
-
-        if (FileU.isFloder(parentPath)) {
-            path = new StringBuffer(parentPath).append(picName).toString();
-            loadPic(context, path, view, options);
-        } else {
-            return;
-        }
-
-    }
-
-
-    public static void getLocalPicByPath(Context context, String picPath
-            , ImageView view, RequestOptions options) {
-        if (view == null) {
-            return;
-        }
-
-        if (FileU.isFileExits(picPath)) {
-            loadPic(context, picPath, view, options);
-        }
-    }
 
 
     public static RequestOptions getDefaultOptions(@Nullable RequestOptions options) {
